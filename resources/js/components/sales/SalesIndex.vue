@@ -30,13 +30,13 @@
           <th class="px-6 py-3 bg-gray-50">
             <span
               class="text-xs font-medium tracking-wider leading-4 text-left text-gray-500 uppercase"
-              >Invoice Date</span
+              >Created Date</span
             >
           </th>
           <th class="px-6 py-3 bg-gray-50">
             <span
               class="text-xs font-medium tracking-wider leading-4 text-left text-gray-500 uppercase"
-              >Grand Total</span
+              >Total</span
             >
           </th>
           <th class="px-6 py-3 bg-gray-50"></th>
@@ -54,7 +54,7 @@
             <td
               class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap"
             >
-              {{ item.invoice_no }}
+              {{ item.uuid }}
             </td>
             <td
               class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap"
