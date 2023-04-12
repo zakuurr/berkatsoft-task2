@@ -2,8 +2,10 @@
 namespace App\Repositories;
 
 use App\Exceptions\EmptyDataException;
+use App\Traits\RepositoryExtend as TraitsRepositoryExtend;
 use App\Traits\RepositoryFilter;
 use App\Traits\RepositorySearch;
+use Iqbalatma\LaravelServiceRepo\Traits\RepositoryExtend;
 
 interface IRepository
 {
@@ -20,7 +22,7 @@ interface IRepository
 
 abstract class BaseRepository implements IRepository
 {
-    use RepositoryFilter, RepositorySearch;
+    use RepositoryFilter, RepositorySearch,TraitsRepositoryExtend;
 
     protected const DEFAULT_PER_PAGE = 5;
     protected const LIMIT = 5;

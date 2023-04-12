@@ -5,18 +5,45 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleRequest;
 use App\Http\Resources\SaleResource;
+use App\Http\Resources\SalesOrderResource;
+use App\Http\Resources\SalesOrderResourceCollection;
 use App\Models\Cart;
 use App\Models\SalesOrder;
 use App\Models\SalesOrderDetail;
+use App\Services\SalesOrderService;
 use Illuminate\Http\Request;
-
-class SalesOrderController extends Controller
+use Illuminate\Http\JsonResponse;
+class SalesOrderController extends ApiController
 {
-    public function index()
+    private string $responseName = 'Sales Order';
+    private array $responseMessage = [
+        'index' => 'Get list Sales Order successfully',
+        'show' => 'Get Detail Sales Order successfully',
+        'store' => 'Add new Sales Order successfully',
+        'update' => 'Update Sales Order successfully',
+        'destroy' => 'Delete Sales Order successfully',
+        'destroy_failed' => 'Delete Sales Order failed, the data is not exists',
+    ];
+
+    public function index(SalesOrderService $service): JsonResponse
     {
-        $sales = SalesOrder::with('customer', 'sales_order_details.product')->get();
-        return SaleResource::collection($sales);
+
+
+
+        return $this->responseWithResourceCollection(
+            new SalesOrderResourceCollection($service->getAllData()),
+            $this->responseName,
+            $this->responseMessage['index'],
+            JsonResponse::HTTP_OK
+        );
     }
+
+    // public function index()
+    // {
+    //     // $sales = SalesOrder::with('customer', 'sales_order_details.product')->get();
+    //     // return SaleResource::collection($sales);
+
+    // }
 
     public function count()
     {
@@ -64,17 +91,37 @@ class SalesOrderController extends Controller
         return new SaleResource($sale);
     }
 
-    public function show($id)
+    // public function show($id)
+    // {
+    //     $sale = SalesOrder::with('customer', 'sales_order_details', 'sales_order_details.product')->findOrFail($id);
+    //     return new SaleResource($sale);
+    // }
+
+    public function show(SalesOrderService $service, string $id): ?JsonResponse
     {
-        $sale = SalesOrder::with('customer', 'sales_order_details', 'sales_order_details.product')->findOrFail($id);
-        return new SaleResource($sale);
+        return $this->responseWithResource(
+            new SalesOrderResource($service->getDataById($id)),
+            $this->responseName,
+            $this->responseMessage["show"],
+            JsonResponse::HTTP_OK
+        );
     }
 
-    public function destroy(SalesOrder $sale)
-    {
-        $sale->sales_order_details()->delete();
-        $sale->delete();
+    // public function destroy(SalesOrder $sale)
+    // {
+    //     $sale->sales_order_details()->delete();
+    //     $sale->delete();
 
-        return response()->noContent();
+    //     return response()->noContent();
+    // }
+
+    public function destroy(SalesOrderService $service, string $id): JsonResponse
+    {
+        $service->deleteDataById($id);
+        return $this->apiResponse([
+            "success" => true,
+            "name" => $this->responseName,
+            "message" => $this->responseMessage["destroy"]
+        ], JsonResponse::HTTP_OK);
     }
 }
