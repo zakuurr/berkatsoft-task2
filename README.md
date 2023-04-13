@@ -27,4 +27,4 @@ $ npm run build
 
 `http://127.0.0.1:8000/login`
 email : admin@gmail.com
-password : reza123
+password : admin123
