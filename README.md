@@ -4,10 +4,9 @@
 2. Tailwind
 3. Vite
 4. DaisyUI for tailwind css components
-<<<<<<< HEAD
+
 ```
-=======
->>>>>>> 9adfb6a7319cc0079ca0e4a8758dc1e210abe65d
+
 
 ### Configuration
 
@@ -27,4 +26,4 @@ $ npm run build
 
 `http://127.0.0.1:8000/login`
 email : admin@gmail.com
-password : reza123
+password : admin123
