@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\SalesOrder;
+use App\Models\SalesOrderDetail;
 use Illuminate\Support\Facades\DB;
 
 class SalesOrderRepository extends BaseRepository
@@ -10,7 +11,7 @@ class SalesOrderRepository extends BaseRepository
     protected  $model;
     public function __construct()
     {
-        $this->model = new SalesOrder;
+        $this->model = new SalesOrderDetail();
     }
 
 

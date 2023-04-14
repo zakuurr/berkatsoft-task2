@@ -11,7 +11,7 @@ export default function useCarts() {
 
     const getCarts = async () => {
         let response = await axios.get('/get_cart_user')
-        carts.value = response.data.data;
+        carts.value = response.data.payload.data;
     }
 
     const storeCart = async (data) => {
