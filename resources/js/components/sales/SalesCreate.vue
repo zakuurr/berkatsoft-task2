@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <form class="space-y-6" @submit.prevent="saveCart">
+
     <div class="space-y-4 rounded-md shadow-sm">
       <div>
         <div>
@@ -83,17 +83,21 @@
                 </button>
               </div>
 
-            <div class="mt-1">
+            
+          </div>
+        </div>
+        <div class="mt-1">
               <button
                 type="submit"
+                @click="saveCart"
                 class="inline px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase bg-success rounded-md border border-transparent ring-gray-300 transition duration-150 ease-in-out hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring disabled:opacity-25"
               >
-                <span v-if="item.edit_state == true">Update cart</span>
+                <span v-if="formdata.edit_state == true">Update cart</span>
                 <span v-else>+</span>
               </button>
             </div>
 
-            <div v-if="item.edit_state == true">
+            <div v-if="formdata.edit_state == true">
               <button
                 type="button"
                 @click="cancelEdit"
@@ -102,11 +106,9 @@
                 Cancel edit
               </button>
             </div>
-          </div>
-        </div>
       </div>
     </div>
-  </form>
+
 
   <form class="space-y-6 mt-5" @submit.prevent="saveSale">
     <div class="space-y-4 rounded-md shadow-sm">
@@ -238,11 +240,14 @@ import useSales from "@/moleculs/sales";
 import useCustomers from "@/moleculs/customers";
 import { onMounted } from "vue";
 
-const formdata = reactive([{
+const formdata = reactive(
+  [
+    {
   product_id: "",
   qty: "",
   edit_state: false,
-}]);
+}
+]);
 
 const form_sale = reactive({
   customer_id: "",
@@ -269,9 +274,11 @@ const deleteCart = async (id) => {
 
 const editCart = async (id) => {
   let cartData = await getCartData(id);
-  formdata[0].qty = cartData.qty;
-  formdata[0].product_id = cartData.id;
-  formdata[0].edit_state = true;
+  formdata.forEach((item) => {
+  item.qty = cartData.qty;
+  item.product_id = cartData.id;
+  item.edit_state = true;
+  })
 }
 
 const saveSale = async () => {
@@ -279,20 +286,28 @@ const saveSale = async () => {
   await storeSale({ ...form_sale });
 };
 const saveCart = async () => {
-  formdata.edit_state
-    ? await confirmEdit()
-    : await storeCart(formdata[0].qty, products.value.filter((item) => item.id == formdata[0].product_id)[0]);
+  formdata.forEach( async (item) => {
+    item.edit_state ? await confirmEdit() : 
+    await storeCart(
+    item.qty, 
+    products.value.filter((cart) => cart.id == item.product_id)[0]);
+    })
+  
 };
 
 const confirmEdit = async () => {
-  await confirmUpdate(formdata.qty[0], products.value.filter((item) => item.id == formdata[0].product_id)[0]);
+  formdata.forEach( async (item) => {
+  await confirmUpdate(item.qty, products.value.filter((cart) => cart.id == item.product_id)[0]);
   cancelEdit();
+})
 }
 
 const cancelEdit = async () => {
-  formdata[0].qty = "";
-  formdata[0].product_id = "";
-  formdata[0].edit_state = false;
+  formdata.forEach( async (item) => {
+  item.qty = "";
+  item.product_id = "";
+  item.edit_state = false;
+  })
 }
 
 const addProduct = () => {
