@@ -10,12 +10,12 @@ export default function useSales() {
 
     const getSales = async () => {
         let response = await axios.get('/api/sales')
-        sales.value = response.data.payload.data;
+        sales.value = response.data.data;
     }
 
     const getSale = async (id) => {
         let response = await axios.get('/api/sales/' + id)
-        sale.value = response.data.payload.data;
+        sale.value = response.data.data;
     }
 
     const storeSale = async (data) => {

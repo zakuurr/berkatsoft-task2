@@ -3,33 +3,56 @@ import axios from "axios";
 import { useRouter } from 'vue-router';
 
 export default function useCarts() {
-    const carts = ref([])
+    var carts = ref([])
     const cart = ref([])
     const router = useRouter()
     const errors = ref('')
 
 
     const getCarts = async () => {
-        let response = await axios.get('/get_cart_user')
-        carts.value = response.data.payload.data;
+
     }
 
-    const storeCart = async (data) => {
-        errors.value = ''
-        try {
-            await axios.post('/api/carts', data)
-            await router.push({name: 'sales.create'})
-        } catch (e) {
-            if (e.response.status === 422) {
-                errors.value = e.response.data.errors
-            }
+    const storeCart = async (qty, product) => {
+    
+        if (carts.value.find((cart) => cart.id === product.id)) {
+            carts.value.map((cart) => {
+                if (cart.id === product.id) {
+                    cart.qty = parseInt(cart.qty) + parseInt(qty);
+                }
+            });
+            return;
         }
+        
+        carts.value.push({
+            qty: qty,
+            id: product.id,
+            name: product.name,
+            desc: product.desc,
+            price: product.price,
+        });
     }
 
-    const destroyCart = async (id) => {
-        await axios.delete('/api/carts/' + id)
+    const confirmUpdate = async (qty, product) => {
+        if (carts.value.find((cart) => cart.id === product.id)) {
+            carts.value.map((cart) => {
+                if (cart.id === product.id) {
+                    cart.qty = qty;
+                }
+            });
+            return;
+        }
+
+        storeCart(qty, product);
     }
 
+    const getCartData = async (index) => {
+        return carts.value[index];
+    }
+
+    const destroyCart = async (index) => {
+        carts.value.splice(index, 1);
+    }
 
     return {
         carts,
@@ -37,6 +60,8 @@ export default function useCarts() {
         errors,
         getCarts,
         storeCart,
-        destroyCart
+        getCartData,
+        destroyCart,
+        confirmUpdate,
     }
 }

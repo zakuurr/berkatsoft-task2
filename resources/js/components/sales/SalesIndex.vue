@@ -30,13 +30,13 @@
           <th class="px-6 py-3 bg-gray-50">
             <span
               class="text-xs font-medium tracking-wider leading-4 text-left text-gray-500 uppercase"
-              >Created Date</span
+              >Invoice Date</span
             >
           </th>
           <th class="px-6 py-3 bg-gray-50">
             <span
               class="text-xs font-medium tracking-wider leading-4 text-left text-gray-500 uppercase"
-              >Total</span
+              >Grand Total</span
             >
           </th>
           <th class="px-6 py-3 bg-gray-50"></th>
@@ -54,7 +54,7 @@
             <td
               class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap"
             >
-              {{ item.uuid }}
+              {{ item.invoice_no }}
             </td>
             <td
               class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap"
@@ -69,6 +69,8 @@
             <td
               class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap"
             >
+           
+
               <router-link
                 :to="{ name: 'sales.show', params: { id: item.id } }"
                 class="mr-2 inline-flex items-center px-4 py-2 bg-warning border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"

@@ -2,36 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\CartResource;
-use App\Http\Resources\CartResourceCollection;
 use App\Models\Cart;
-use App\Services\CartService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CartController extends ApiController
+class CartController extends Controller
 {
-
-    private string $responseName = 'Carts';
-    private array $responseMessage = [
-        'index' => 'Get list Carts successfully',
-        'store' => 'Add new Carts successfully',
-       
-    ];
-
-    public function get_cart_user(CartService $service) : JsonResponse 
+    public function get_cart_user()
     {
-        return $this->responseWithResourceCollection(
-            new CartResourceCollection($service->getAllData()),
-            $this->responseName,
-            $this->responseMessage['index'],
-            JsonResponse::HTTP_OK
-        );
-        
-        // $carts = Cart::with('product')->get();
-        // return CartResource::collection($carts);
+        $carts = Cart::with('product')->get();
+        return CartResource::collection($carts);
     }
 
     public function store(Request $request)

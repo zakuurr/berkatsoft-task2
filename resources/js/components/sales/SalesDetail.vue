@@ -47,13 +47,6 @@
                 >Description</span
               >
             </th>
-
-            <th class="px-6 py-3 bg-gray-50">
-              <span
-                class="text-xs font-medium tracking-wider leading-4 text-left text-gray-500 uppercase"
-                >Type</span
-              >
-            </th>
             <th class="px-6 py-3 bg-gray-50">
               <span
                 class="text-xs font-medium tracking-wider leading-4 text-left text-gray-500 uppercase"
@@ -87,11 +80,6 @@
                 class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap"
               >
                 {{ item.product?.desc }}
-              </td>
-              <td
-                class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap"
-              >
-                {{ item.product?.type }}
               </td>
               <td
                 class="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap"
